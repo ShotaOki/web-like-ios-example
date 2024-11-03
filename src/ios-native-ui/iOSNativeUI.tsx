@@ -77,6 +77,11 @@ type OnsItem = (props: {
   children?: React.ReactNode;
 }) => JSX.Element;
 
+type OnsToolbar = (props: {
+  modifier?: string | undefined;
+  children?: React.ReactNode;
+}) => JSX.Element;
+
 type OnsPage = (props: {
   children?: React.ReactNode;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -100,6 +105,7 @@ export function useIOSNativeUI(): {
   Page: OnsPage;
   List: OnsList;
   ListItem: OnsItem;
+  Toolbar: OnsToolbar;
 } {
   return {
     Button: Ons.Button,
@@ -109,5 +115,6 @@ export function useIOSNativeUI(): {
     Page: Ons.Page,
     List: Ons.List,
     ListItem: Ons.ListItem,
+    Toolbar: Ons.Toolbar,
   };
 }

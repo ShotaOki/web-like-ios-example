@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useIOSNativeUI } from "./iOSNativeUI";
-import { Flex } from "@aws-amplify/ui-react";
 
 interface ModalNavigator {
   showModal: (key: string) => void;
@@ -8,11 +7,17 @@ interface ModalNavigator {
 }
 
 interface Props {
-  modals: Record<string, (navigator: ModalNavigator) => React.ReactNode>;
+  modals: Record<
+    string,
+    {
+      title: string;
+      nagivator: (navigator: ModalNavigator) => React.ReactNode;
+    }
+  >;
   children: (navigator: ModalNavigator) => React.ReactNode;
 }
 export default function IOSActionModalNavigation(props: Props) {
-  const { Button, Navigator, Page } = useIOSNativeUI();
+  const { Button, Navigator, Page, Toolbar } = useIOSNativeUI();
 
   const ActionModalBackground = styled.div`
     background-color: #666666;
@@ -22,12 +27,20 @@ export default function IOSActionModalNavigation(props: Props) {
     bottom: 0px;
     right: 0px;
   `;
+  const ActionModalRadius = styled.div`
+    background-color: white;
+    position: fixed;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    top: 20px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+  `;
   const ActionModalView = styled.div`
     background-color: white;
     position: fixed;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    top: 20px;
+    top: 30px;
     left: 0px;
     bottom: 0px;
     right: 0px;
@@ -62,27 +75,33 @@ export default function IOSActionModalNavigation(props: Props) {
                 .map((key) => (
                   <Page key={key}>
                     <ActionModalBackground>
-                      <ActionModalView>
-                        <Flex direction={"column"}>
-                          <Flex
-                            direction={"row"}
-                            justifyContent={"space-between"}
-                            alignItems={"center"}
-                            alignContent={"center"}
-                            padding={2}
+                      <ActionModalRadius>
+                        <ActionModalView>
+                          <Page
+                            renderFixed={() => (
+                              <>
+                                <Toolbar modifier="noshadow">
+                                  <div className="center">
+                                    <ActionModalTitle>
+                                      {props.modals[key].title}
+                                    </ActionModalTitle>
+                                  </div>
+                                  <div className="right">
+                                    <Button
+                                      modifier="quiet"
+                                      onClick={() => modalNavigator.hideModal()}
+                                    >
+                                      Back
+                                    </Button>
+                                  </div>
+                                </Toolbar>
+                              </>
+                            )}
                           >
-                            <div></div>
-                            <ActionModalTitle>Title</ActionModalTitle>
-                            <Button
-                              modifier="quiet"
-                              onClick={() => modalNavigator.hideModal()}
-                            >
-                              Back
-                            </Button>
-                          </Flex>
-                          {props.modals[key](modalNavigator)}
-                        </Flex>
-                      </ActionModalView>
+                            {props.modals[key].nagivator(modalNavigator)}
+                          </Page>
+                        </ActionModalView>
+                      </ActionModalRadius>
                     </ActionModalBackground>
                   </Page>
                 ))}

@@ -9,23 +9,26 @@ function App() {
   return (
     <IOSActionModalNavigation
       modals={{
-        ActionModal: (modalNavigator) => (
-          <List
-            dataSource={["Row 1", "Row 2"]}
-            renderRow={(row) => (
-              <ListItem
-                modifier="longdivider"
-                onClick={() => {
-                  console.log(row);
-                  modalNavigator.hideModal();
-                }}
-              >
-                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                {row as any}
-              </ListItem>
-            )}
-          />
-        ),
+        ActionModal: {
+          title: "Action Modal",
+          nagivator: (modalNavigator) => (
+            <List
+              dataSource={["Row 1", "Row 2"]}
+              renderRow={(row) => (
+                <ListItem
+                  modifier="longdivider"
+                  onClick={() => {
+                    console.log(row);
+                    modalNavigator.hideModal();
+                  }}
+                >
+                  {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                  {row as any}
+                </ListItem>
+              )}
+            />
+          ),
+        },
       }}
     >
       {(navigator) => (
