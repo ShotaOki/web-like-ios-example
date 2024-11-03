@@ -28,7 +28,7 @@ export default function IOSActionModalNavigation(props: Props) {
     right: 0px;
   `;
   const ActionModalRadius = styled.div`
-    background-color: white;
+    background-color: var(--toolbar-background-color);
     position: fixed;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
