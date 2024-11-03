@@ -1,34 +1,49 @@
 import { useState } from "react";
 import { useIOSNativeUI } from "./ios-native-ui/iOSNativeUI";
-import ActionModalNavigation from "./ios-native-ui/ActionModalNavigation";
+import IOSActionModalNavigation from "./ios-native-ui/iOSActionModalNavigation";
+import IOSAlertDialog from "./ios-native-ui/iOSAlertDialog";
 
 function App() {
-  const { Button, AlertDialog, AlertDialogButton } = useIOSNativeUI();
+  const { Button, List, ListItem } = useIOSNativeUI();
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <ActionModalNavigation>
+    <IOSActionModalNavigation
+      modals={{
+        ActionModal: (modalNavigator) => (
+          <List
+            dataSource={["Row 1", "Row 2"]}
+            renderRow={(row) => (
+              <ListItem
+                modifier="longdivider"
+                onClick={() => {
+                  console.log(row);
+                  modalNavigator.hideModal();
+                }}
+              >
+                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                {row as any}
+              </ListItem>
+            )}
+          />
+        ),
+      }}
+    >
       {(navigator) => (
         <>
           <Button onClick={() => setIsOpen(true)}>Show Dialog</Button>
-          {/* Alert Dialog */}
-          <AlertDialog isOpen={isOpen}>
-            <div className="alert-dialog-title">Warning!</div>
-            <div className="alert-dialog-content">An error has occurred!</div>
-            <div className="alert-dialog-footer">
-              <AlertDialogButton onClick={() => setIsOpen(false)}>
-                Cancel
-              </AlertDialogButton>
-              <AlertDialogButton onClick={() => setIsOpen(false)}>
-                OK
-              </AlertDialogButton>
-            </div>
-          </AlertDialog>
-          <Button onClick={() => navigator.showModal()}>
+          <Button onClick={() => navigator.showModal("ActionModal")}>
             Show Action Modal
           </Button>
+          <IOSAlertDialog
+            isOpen={isOpen}
+            onClickCancel={() => setIsOpen(false)}
+            onClickOK={() => setIsOpen(false)}
+            title={"Warning!"}
+            message={"An error has occurred!"}
+          />
         </>
       )}
-    </ActionModalNavigation>
+    </IOSActionModalNavigation>
   );
 }
 

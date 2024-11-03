@@ -39,17 +39,42 @@ type OnsAlertDialogButton = (props: {
 }) => JSX.Element;
 
 type OnsNavigator = (props: {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  renderPage(route: any, navigator?: Navigator): React.JSX.Element;
+  renderPage(
+    route: {
+      page: string;
+    },
+    navigator?: _Ons.Navigator
+  ): React.JSX.Element;
   initialRouteStack?: string[] | undefined;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  initialRoute?: any;
+  initialRoute?: {
+    page: string;
+  };
   onPrePush?(): void;
   onPostPush?(): void;
   onPrePop?(): void;
   onPostPop?(): void;
   animation?: _Ons.NavigatorAnimationTypes | undefined;
   animationOptions?: _Ons.AnimationOptions | undefined;
+}) => JSX.Element;
+
+type OnsList = (props: {
+  modifier?: string | undefined;
+  dataSource?: unknown[] | undefined;
+  renderRow?(row: unknown, index?: number): React.JSX.Element | undefined;
+  renderFooter?(): React.JSX.Element | undefined;
+  renderHeader?(): React.JSX.Element | undefined;
+}) => JSX.Element;
+
+type OnsItem = (props: {
+  modifier?: string | undefined;
+  tappable?: boolean | undefined;
+  tapBackgroundColor?: string | undefined;
+  lockOnDrag?: boolean | undefined;
+  expandable?: boolean | undefined;
+  expanded?: boolean | undefined;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onClick?: React.MouseEventHandler<any> | undefined;
+  children?: React.ReactNode;
 }) => JSX.Element;
 
 type OnsPage = (props: {
@@ -73,6 +98,8 @@ export function useIOSNativeUI(): {
   AlertDialogButton: OnsAlertDialogButton;
   Navigator: OnsNavigator;
   Page: OnsPage;
+  List: OnsList;
+  ListItem: OnsItem;
 } {
   return {
     Button: Ons.Button,
@@ -80,5 +107,7 @@ export function useIOSNativeUI(): {
     AlertDialogButton: Ons.AlertDialogButton,
     Navigator: Ons.Navigator,
     Page: Ons.Page,
+    List: Ons.List,
+    ListItem: Ons.ListItem,
   };
 }
